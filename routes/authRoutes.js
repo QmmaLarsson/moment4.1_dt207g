@@ -23,13 +23,21 @@ router.post("/register", async (req, res) => {
 
         //Validera input
         if (!username || !password) {
-            return res.status(400).json({ error: "Ogiltig inmatning, fyll i användarnamn och lösenord" })
+            return res.status(400).json({ error: "Ogiltig inmatning, fyll i användarnamn och lösenord" });
+        }
+
+        if (username.length < 4) {
+            return res.status(400).json({ error: "Användarnamn måste bestå av minst fyra tecken" });
+        }
+
+        if (password.length < 6) {
+            return res.status(400).json({ error: "Lösenord måste bestå av minst sex tecken" });
         }
 
         //Korrekt input - Skapa användare
         const user = new User({ username, password });
         await user.save();
-        res.status(201).json({ message: "Användare skapad" })
+        res.status(201).json({ message: "Användare skapad" });
 
     } catch (error) {
         res.status(500).json({ error: "Server error" });
@@ -43,7 +51,7 @@ router.post("/login", async (req, res) => {
 
         //Validera input
         if (!username || !password) {
-            return res.status(400).json({ error: "Ogiltig inmatning, fyll i användarnamn och lösenord" })
+            return res.status(400).json({ error: "Ogiltig inmatning, fyll i användarnamn och lösenord" });
         }
 
         //Kontrollera username och password

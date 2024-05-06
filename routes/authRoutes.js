@@ -34,6 +34,11 @@ router.post("/register", async (req, res) => {
             return res.status(400).json({ error: "Lösenord måste bestå av minst sex tecken" });
         }
 
+        const existingUser = await User.findOne({ username });
+        if (existingUser) {
+            return res.status(400).json({ error: "Användarnamnet är upptaget" });
+        }
+
         //Korrekt input - Skapa användare
         const user = new User({ username, password });
         await user.save();

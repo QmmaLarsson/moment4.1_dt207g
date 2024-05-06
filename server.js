@@ -11,6 +11,10 @@ app.use(bodyParser.json());
 //Routes
 app.use("/api", authRoutes);
 
+app.get("/api", (req, res) => {
+    res.json({ message: "Välkommen till min webbtjänst" })
+});
+
 //Skyddad route
 app.get("/api/protected", authenticateToken, (req, res) => {
     res.json({ message: "Skyddad route" });

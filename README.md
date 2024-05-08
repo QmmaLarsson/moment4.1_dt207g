@@ -21,4 +21,4 @@ Nedan finns en beskriving av hur man kan nå APIet:
 |---|---|---|
 | POST | /register | Lägger till en ny användare. Exempel på JSON-data: { "username": "user1", "password": "password1" }. |
 | POST | /login | Loggar in en användare. Exempel på JSON-data: { "username": "user1", "password": "password1" }. |
-| GET | /protected | Exempel på en skyddad route. För att komma åt denna måste man inkuldera en JWT-token i sin förfrågan. |
+| GET | /jobs | Skyddad route. För att komma åt denna måste man inkuldera en JWT-token i sin förfrågan. |

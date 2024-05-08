@@ -13,7 +13,6 @@ mongoose.connect(process.env.MONGO_URL).then(() => {
 });
 
 //Användar-model
-const user = require("../models/user");
 const User = require("../models/user");
 
 //Lägg till ny användare

@@ -1,15 +1,37 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const jwt = require("jsonwebtoken");
-const Job = require("./models/user");
 require("dotenv").config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(cors());
+
+//Schema för jobb
+const jobSchema = new mongoose.Schema({
+    companyname: {
+        type: String,
+        required: [true, "Du måste fylla i företagsnamn."]
+    },
+    jobtitle: {
+        type: String,
+        required: [true, "Du måste fylla i jobbtitel."]
+    },
+    location: {
+        type: String,
+        required: [true, "Du måste fylla i plats."]
+    },
+    description: {
+        type: String,
+        required: [true, "Du måste fylla i beskrivning."]
+    }
+});
+
+const Job = mongoose.model("Job", jobSchema);
 
 //Routes
 app.use("/api", authRoutes);
@@ -18,8 +40,27 @@ app.get("/api", (req, res) => {
     res.json({ message: "Välkommen till min webbtjänst" })
 });
 
-/*
-//Skyddad route
+//Posta jobb till skyddad route
+app.post("/api/jobs", authenticateToken, async (req, res) => {
+    try {
+        const { companyname, jobtitle, location, description } = req.body;
+
+        //Validera input
+        if (!companyname || !jobtitle || !location || !description) {
+            return res.status(400).json({ error: "Ogiltig inmatning, fyll i användarnamn och lösenord" });
+        }
+
+        //Korrekt input - Skapa användare
+        const newJob = new Job({ companyname, jobtitle, location, description });
+        await newJob.save();
+        res.status(201).json({ message: "Nytt jobb tillagt" });
+
+    } catch (error) {
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+//Hämta jobb från skyddad route
 app.get("/api/jobs", authenticateToken, async (req, res) => {
     try {
         // Hämta jobbdata från databasen
@@ -33,7 +74,6 @@ app.get("/api/jobs", authenticateToken, async (req, res) => {
         res.status(500).json({ message: "Det uppstod ett fel vid hämtning av jobb." });
     }
 });
-*/
 
 //Validering av token
 function authenticateToken(req, res, next) {

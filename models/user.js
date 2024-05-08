@@ -78,7 +78,7 @@ userSchema.statics.login = async function (username, password) {
 const User = mongoose.model("User", userSchema);
 module.exports = User;
 
-//Schema för job
+//Schema för jobb
 //Job schema
 const jobSchema = new mongoose.Schema({
     companyname: {

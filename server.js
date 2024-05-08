@@ -21,7 +21,7 @@ app.get("/api", (req, res) => {
 //Skyddad route
 app.get("/api/jobs", authenticateToken, async (req, res) => {
     try {
-        // Hämta jobbdata från databasen (t.ex. med Mongoose)
+        // Hämta jobbdata från databasen
         const jobs = await Job.find({});
 
         // Skicka jobbdata tillbaka till klienten

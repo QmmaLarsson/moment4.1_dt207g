@@ -18,28 +18,7 @@ app.get("/api", (req, res) => {
     res.json({ message: "Välkommen till min webbtjänst" })
 });
 
-//Schema för jobb
-const jobSchema = new mongoose.Schema({
-    companyname: {
-        type: String,
-        required: [true, "Du måste fylla i företagsnamn."]
-    },
-    jobtitle: {
-        type: String,
-        required: [true, "Du måste fylla i jobbtitel."]
-    },
-    location: {
-        type: String,
-        required: [true, "Du måste fylla i plats."]
-    },
-    description: {
-        type: String,
-        required: [true, "Du måste fylla i beskrivning."]
-    }
-});
-
-const Job = mongoose.model("Job", jobSchema);
-
+/*
 //Skyddad route
 app.get("/api/jobs", authenticateToken, async (req, res) => {
     try {
@@ -54,6 +33,7 @@ app.get("/api/jobs", authenticateToken, async (req, res) => {
         res.status(500).json({ message: "Det uppstod ett fel vid hämtning av jobb." });
     }
 });
+*/
 
 //Validering av token
 function authenticateToken(req, res, next) {

@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const authRoutes = require("./routes/authRoutes");
 const jwt = require("jsonwebtoken");
+const Job = require("./models/user");
 require("dotenv").config();
 
 const app = express();
@@ -18,8 +19,18 @@ app.get("/api", (req, res) => {
 });
 
 //Skyddad route
-app.get("/api/protected", authenticateToken, (req, res) => {
-    res.json({ message: "Skyddad route" });
+app.get("/api/jobs", authenticateToken, async (req, res) => {
+    try {
+        // Hämta jobbdata från databasen (t.ex. med Mongoose)
+        const jobs = await Job.find({});
+
+        // Skicka jobbdata tillbaka till klienten
+        res.json(jobs);
+    } catch (error) {
+        // Hantera eventuella fel
+        console.error("Det uppstod ett fel vid hämtning av jobb:", error);
+        res.status(500).json({ message: "Det uppstod ett fel vid hämtning av jobb." });
+    }
 });
 
 //Validering av token
